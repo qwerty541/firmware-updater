@@ -1,0 +1,8 @@
+[Unit]
+Description=Firmware emulator, process which just sleep for 10 hours
+
+[Service]
+ExecStart=/home/username/projects/firmware-updater/firmware-storage/firmware-v1
+
+[Install]
+WantedBy=multi-user.target
