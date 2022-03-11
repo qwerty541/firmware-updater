@@ -1,0 +1,47 @@
+{
+    "$schema": "https://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "required": [
+        "$schema",
+        "firmwareLocalStoragePath",
+        "firmwareFileNameWithoutVersion",
+        "remoteFirmwareStorageServer",
+        "systemdFirmwareServiceConfigurationFilePath"
+    ],
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "firmwareLocalStoragePath": {
+            "type": "string"
+        },
+        "firmwareFileNameWithoutVersion": {
+            "type": "string"
+        },
+        "remoteFirmwareStorageServer": {
+            "type": "object",
+            "required": [
+                "hostname",
+                "port",
+                "path"
+            ],
+            "properties": {
+                "hostname": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "integer",
+                    "maximum": 65535
+                },
+                "path": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "systemdFirmwareServiceConfigurationFilePath": {
+            "type": "string"
+        }
+    },
+    "additionalProperties": false
+}

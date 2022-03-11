@@ -1,0 +1,11 @@
+{
+    "$schema": "./config.schema.json",
+    "firmwareLocalStoragePath": "/home/username/projects/firmware-updater/firmware-storage/",
+    "firmwareFileNameWithoutVersion": "firmware-v",
+    "remoteFirmwareStorageServer": {
+        "hostname": "127.0.0.1",
+        "port": 8080,
+        "path": "/"
+    },
+    "systemdFirmwareServiceConfigurationFilePath": "/etc/systemd/system/fake_firmware.service"
+}
