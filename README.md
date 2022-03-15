@@ -28,7 +28,7 @@ cd ./firmware-updater/
 
 ### Compile firmware emulator
 
-Important! For this step you need to have installed rust compiler, follow this link for details: https://www.rust-lang.org/tools/install
+**Important!** For this step you need to have installed rust compiler, follow this link for details: https://www.rust-lang.org/tools/install
 
 Now follow to subproject folder:
 
@@ -45,7 +45,7 @@ cargo build
 
 After compilation of firmware emulator we need a http server from witch the new firmware version will be downloaded.
 
-Important! For this and future steps you need to have installed nodejs, follow this link for details: https://nodejs.org/
+**Important!** For this and future steps you need to have installed nodejs, follow this link for details: https://nodejs.org/
 
 Globally install nodejs package `http-server`:
 
@@ -117,7 +117,7 @@ cp ./fake-firmware-process/target/debug/fake_firmware_process ./firmware-storage
 mv ./firmware-storage/fake_firmware_process ./firmware-storage/firmware-v1
 ```
 
-After that we need to rewrite property `firmwareLocalStoragePath` in `config,json`. After changes it should look like: 
+After that we need to rewrite property `firmwareLocalStoragePath` in `config.json`. After changes it should look like: 
 
 ```json
 {
@@ -127,7 +127,7 @@ After that we need to rewrite property `firmwareLocalStoragePath` in `config,jso
 
 ### Systemd process
 
-And the last preparation step, we need to run our current firmware binary `/home/username/projects/firmware-updater/firmware-storage/firmware-v1` as systemd process.
+At this step we need to run our current firmware binary `/home/username/projects/firmware-updater/firmware-storage/firmware-v1` as systemd process.
 
 For that you need to create `.service` file from template:
 
@@ -162,6 +162,17 @@ It remains only to change `systemdFirmwareServiceConfigurationFilePath` property
 {
   "systemdFirmwareServiceConfigurationFilePath": "/etc/systemd/system/fake_firmware.service"
 }
+```
+
+### Firmware updater dependencies installation
+
+And the last preparation step, we need to install required dependencies for launching `firmware-updater`.
+
+**Important!** For this and future steps you need to have installed yarn package manager, follow this link for details: https://yarnpkg.com/getting-started/install
+
+```sh
+cd /home/username/projects/firmware-updater/firmware-updater/
+yarn install
 ```
 
 ## Firmware updater running
