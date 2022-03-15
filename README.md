@@ -1,6 +1,6 @@
-# firmware-updater
+# Firmware-updater
 
-Simple typescript tool for updating firmvare. Made for work purposes.
+Simple typescript tool for updating firmware. Made for work purposes.
 
 # Usage guide
 
@@ -20,7 +20,7 @@ Then cloning project files there:
 git clone git@github.com:qwerty541/firmware-updater.git
 ```
 
-Go to the appearead project folder:
+Go to the appeared project folder:
 
 ```sh
 cd ./firmware-updater/
@@ -28,7 +28,7 @@ cd ./firmware-updater/
 
 ### Compile firmware emulator
 
-Important! For this step you need to have installed rust compiller, follow this link for details: https://www.rust-lang.org/tools/install
+Important! For this step you need to have installed rust compiler, follow this link for details: https://www.rust-lang.org/tools/install
 
 Now follow to subproject folder:
 
@@ -41,7 +41,7 @@ Begin compilation by this command:
 cargo build
 ```
 
-### HTTP firmvare update server
+### HTTP firmware update server
 
 After compilation of firmware emulator we need a http server from witch the new firmware version will be downloaded.
 
@@ -73,10 +73,10 @@ Copy inside these new folder firmware binary file:
 cp ./fake-firmware-process/target/debug/fake_firmware_process ./fake-http-server-storage/
 ```
 
-Now we need to give that file a name with contains firmware version, for example `formware-v2`. Version 2 because will have version 1 running and we will upgrade it to 2.
+Now we need to give that file a name with contains firmware version, for example `firmware-v2`. Version 2 because will have version 1 running and we will upgrade it to 2.
 
 ```sh
-mv ./fake-http-server-storage/fake_firmware_process ./fake-http-server-storage/firmvare-v2
+mv ./fake-http-server-storage/fake_firmware_process ./fake-http-server-storage/firmware-v2
 ```
 
 Now all about HTTP server was read, lets run it:
@@ -150,7 +150,7 @@ sudo systemctl daemon-reload
 sudo systemctl start fake_firmware
 ```
 
-And check its status to be sure that everythink went without errors:
+And check its status to be sure that everything went without errors:
 
 ```sh
 sudo systemctl status fake_firmware
