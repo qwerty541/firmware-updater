@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "UNLICENSED",
   "scripts": {
-    "update-firmvare": "ts-node -P tsconfig.json src/index.ts",
+    "update-firmware": "ts-node -P tsconfig.json src/index.ts",
     "format": "prettier \"./src/*.ts\" --write"
   },
   "devDependencies": {
