@@ -6,7 +6,7 @@
     "update-firmvare": "ts-node -P tsconfig.json src/index.ts",
     "format": "prettier \"./src/*.ts\" --write"
   },
-  "dependencies": {
+  "devDependencies": {
     "@types/node": "17.0.21",
     "ts-node": "10.7.0",
     "tslint": "6.1.3",
