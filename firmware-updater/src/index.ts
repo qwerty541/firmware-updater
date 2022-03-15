@@ -52,68 +52,68 @@ async function run(): Promise<void> {
     console.log(`Checking remote server for next firmware version: ${nextFirmwareFileVersion}`);
 
     const httpRequest = http.request(httpRequestOptions, (incoming: http.IncomingMessage) => {
-        if (incoming.statusCode == 200) {
-            console.log("New version of firmware was found, starting download...");
-
-            // prettier-ignore
-            const nextVersionFirmwareFilePath: fs.PathLike =
-                `${config.firmwareLocalStoragePath}${config.firmwareFileNameWithoutVersion}${nextFirmwareFileVersion}`;
-
-            fs.appendFileSync(nextVersionFirmwareFilePath, "", bufferEncoding);
-            child_process.execSync(`chmod 777 ${nextVersionFirmwareFilePath}`);
-
-            const nextVersionFirmwareFileWriteStream = fs.createWriteStream(
-                nextVersionFirmwareFilePath,
-                bufferEncoding,
-            );
-
-            incoming.pipe(nextVersionFirmwareFileWriteStream);
-
-            nextVersionFirmwareFileWriteStream.on("finish", () => {
-                nextVersionFirmwareFileWriteStream.close();
-
-                console.log("New version of firmware was successfully written");
-
-                const systemdFirmwareServiceName = extractSystemdServiceNameFromConfigFilePath(
-                    config.systemdFirmwareServiceConfigurationFilePath,
-                );
-                child_process.execSync(`systemctl stop ${systemdFirmwareServiceName}`);
-
-                console.log(`Current firmware process successfully stopped`);
-
-                // prettier-ignore
-                const currentVersionFirmwareFilePath: fs.PathLike =
-                    `${config.firmwareLocalStoragePath}${config.firmwareFileNameWithoutVersion}${currentFirmwareFileVersion}`;
-                const systemdFirmwareServiceConfigurationFileNewContent: string = fs
-                    .readFileSync(
-                        config.systemdFirmwareServiceConfigurationFilePath,
-                        bufferEncoding,
-                    )
-                    .toString()
-                    .replace(currentVersionFirmwareFilePath, nextVersionFirmwareFilePath);
-
-                fs.truncateSync(config.systemdFirmwareServiceConfigurationFilePath);
-                fs.writeFileSync(
-                    config.systemdFirmwareServiceConfigurationFilePath,
-                    systemdFirmwareServiceConfigurationFileNewContent,
-                    bufferEncoding,
-                );
-
-                console.log("Systemd service configuration file successfully rewritten");
-
-                child_process.execSync(`systemctl start ${systemdFirmwareServiceName}`);
-
-                console.log(`New firmware version currently running`);
-
-                fs.unlinkSync(currentVersionFirmwareFilePath);
-
-                console.log("Previous firmware file was successfully unlinked");
-                return;
-            });
-        } else {
+        if (incoming.statusCode != 200) {
             console.log("New version of firmware wasn`t found");
             return;
         }
+
+        console.log("New version of firmware was found, starting download...");
+
+        // prettier-ignore
+        const nextVersionFirmwareFilePath: fs.PathLike =
+            `${config.firmwareLocalStoragePath}${config.firmwareFileNameWithoutVersion}${nextFirmwareFileVersion}`;
+
+        fs.appendFileSync(nextVersionFirmwareFilePath, "", bufferEncoding);
+        child_process.execSync(`chmod 777 ${nextVersionFirmwareFilePath}`);
+
+        const nextVersionFirmwareFileWriteStream = fs.createWriteStream(
+            nextVersionFirmwareFilePath,
+            bufferEncoding,
+        );
+
+        incoming.pipe(nextVersionFirmwareFileWriteStream);
+
+        nextVersionFirmwareFileWriteStream.on("finish", () => {
+            nextVersionFirmwareFileWriteStream.close();
+
+            console.log("New version of firmware was successfully written");
+
+            const systemdFirmwareServiceName = extractSystemdServiceNameFromConfigFilePath(
+                config.systemdFirmwareServiceConfigurationFilePath,
+            );
+            child_process.execSync(`systemctl stop ${systemdFirmwareServiceName}`);
+
+            console.log(`Current firmware process successfully stopped`);
+
+            // prettier-ignore
+            const currentVersionFirmwareFilePath: fs.PathLike =
+                `${config.firmwareLocalStoragePath}${config.firmwareFileNameWithoutVersion}${currentFirmwareFileVersion}`;
+            const systemdFirmwareServiceConfigurationFileNewContent: string = fs
+                .readFileSync(
+                    config.systemdFirmwareServiceConfigurationFilePath,
+                    bufferEncoding,
+                )
+                .toString()
+                .replace(currentVersionFirmwareFilePath, nextVersionFirmwareFilePath);
+
+            fs.truncateSync(config.systemdFirmwareServiceConfigurationFilePath);
+            fs.writeFileSync(
+                config.systemdFirmwareServiceConfigurationFilePath,
+                systemdFirmwareServiceConfigurationFileNewContent,
+                bufferEncoding,
+            );
+
+            console.log("Systemd service configuration file successfully rewritten");
+
+            child_process.execSync(`systemctl start ${systemdFirmwareServiceName}`);
+
+            console.log(`New firmware version currently running`);
+
+            fs.unlinkSync(currentVersionFirmwareFilePath);
+
+            console.log("Previous firmware file was successfully unlinked");
+            return;
+        });
 
         incoming.socket.end(undefined);
         return;
